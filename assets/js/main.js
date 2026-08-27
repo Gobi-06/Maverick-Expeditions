@@ -13,7 +13,8 @@
      9.  Highlights carousel
      10. Looping tour columns
      11. Newsletter form
-     12. Back-to-top + current year
+     12. Trip enquiry form (Google Forms)
+     13. Back-to-top + current year
    ========================================================================== */
 
 (function () {
@@ -246,7 +247,11 @@
     var pinned = false;
 
     function isPinned() {
-      return window.innerWidth > 1024 && !reduceMotion;
+      /* The pinned, scroll-scrubbed hero now runs on every screen size —
+         card footprint and scroll runway are handled responsively in CSS
+         (--card-w/--card-h, --hero-scroll). It only steps aside for
+         prefers-reduced-motion, same as every other animation on the page. */
+      return !reduceMotion;
     }
 
     /* below the breakpoint the CSS lays the hero out statically, so strip
@@ -638,7 +643,105 @@
     });
   }
 
-  /* 12. Back-to-top + current year ----------------------------------------- */
+  /* 12. Trip enquiry form (Google Forms) ------------------------------------ */
+
+  /* Posts straight into a Google Form's response endpoint, so submissions
+     land in that Form's linked Google Sheet with no backend of our own.
+
+     LIVE — wired up to the "Maverick Expeditions" Google Form (open it
+     from your Google Forms home / Google Drive — the same form you sent
+     the pre-filled link from — and check its Responses tab for the
+     linked Sheet). The 8
+     questions and their order must stay exactly as they are — Full Name,
+     Phone / WhatsApp, Email Address, Number of Travellers, Destination /
+     Circuit, Trip Type, Preferred Travel Dates, Anything else we should
+     know — and the two multiple-choice questions' option text must keep
+     matching the site form's <select> options exactly, or answers will
+     stop lining up with what's submitted below.
+
+     Rebuilding the form from scratch later? Create the same 8 questions
+     (Short answer / Paragraph — not the Date/Number question types, so
+     each keeps one entry field), then on the *live* form use the ⋮ menu →
+     "Get pre-filled link," fill every field with anything, and copy the
+     generated link — each entry.NNNNNNN in it maps to the field you just
+     filled, in the order you filled them, and the base URL before the "?"
+     with /viewform swapped for /formResponse is TRIP_FORM_ENDPOINT. Until
+     every entry.* below is a real number the form still validates input
+     and shows a friendly message, it just won't save anywhere. */
+
+  var TRIP_FORM_ENDPOINT =
+    "https://docs.google.com/forms/d/e/1FAIpQLScKDKOVcOK_kkMxroyORMwHbv1EuVYPZc2iOO6ccAYcBdvQVA/formResponse";
+
+  var TRIP_FORM_FIELDS = {
+    name: "entry.2079794164",
+    phone: "entry.269967389",
+    email: "entry.1554091186",
+    travellers: "entry.77354116",
+    destination: "entry.1990594234",
+    tripType: "entry.244565682",
+    dates: "entry.1341874142",
+    message: "entry.1721263796"
+  };
+
+  function initTripForm() {
+    var form = $("[data-trip-form]");
+    var note = $("[data-trip-form-note]");
+    if (!form || !note) return;
+
+    var isConfigured = TRIP_FORM_ENDPOINT.indexOf("REPLACE_WITH_FORM_ID") === -1;
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      var nameField = $("#trip-name", form);
+      var name = nameField ? nameField.value.trim() : "";
+
+      if (!isConfigured) {
+        note.textContent =
+          "This form isn't connected yet — call +91 81108 49375 or WhatsApp us and we'll take it from there.";
+        note.style.color = "#ff9b8a";
+        return;
+      }
+
+      var body = new URLSearchParams();
+      Object.keys(TRIP_FORM_FIELDS).forEach(function (key) {
+        var field = $("[name='" + key + "']", form);
+        if (field) body.append(TRIP_FORM_FIELDS[key], field.value.trim());
+      });
+
+      var submitBtn = $("button[type=submit]", form);
+      if (submitBtn) submitBtn.setAttribute("disabled", "true");
+      note.style.color = "var(--on-dark-mute)";
+      note.textContent = "Sending...";
+
+      fetch(TRIP_FORM_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors",
+        body: body
+      })
+        .then(function () {
+          note.textContent =
+            "Thanks, " + (name || "there") + "! A Maverick coordinator will call you shortly.";
+          note.style.color = "var(--lime)";
+          form.reset();
+        })
+        .catch(function () {
+          note.textContent =
+            "Something went wrong sending that. Call +91 81108 49375 or WhatsApp us instead.";
+          note.style.color = "#ff9b8a";
+        })
+        .then(function () {
+          if (submitBtn) submitBtn.removeAttribute("disabled");
+        });
+    });
+  }
+
+  /* 13. Back-to-top + current year ----------------------------------------- */
 
   function initChrome() {
     var btn = $("[data-to-top]");
@@ -672,6 +775,7 @@
     initTicker();
     initCarousel();
     initNewsletter();
+    initTripForm();
     initChrome();
   }
 

@@ -19,6 +19,7 @@
      14. Mission
      15. Testimonials
      16. Journal
+     16a. Plan your trip
      17. Footer
      18. Preloader
      19. Reveal animations
@@ -29,28 +30,30 @@
 
 /* 1. Fonts ---------------------------------------------------------------- */
 
+/* Fraunces — a high-contrast, wonky-optical-size variable serif. Replaces
+   Erode as the display face: warmer and more editorial, and its italic
+   (used for the hero's <em>) has real character instead of a faux-oblique. */
 @font-face {
-  font-family: "Erode";
-  src: url("../fonts/Erode-Regular.woff2") format("woff2");
-  font-weight: 400;
+  font-family: "Fraunces";
+  src: url("../fonts/Fraunces-Variable.woff2") format("woff2-variations"),
+       url("../fonts/Fraunces-Variable.woff2") format("woff2");
+  font-weight: 300 900;
+  font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: "Erode";
-  src: url("../fonts/Erode-Medium.woff2") format("woff2");
-  font-weight: 500;
+  font-family: "Fraunces";
+  src: url("../fonts/Fraunces-Italic-Variable.woff2") format("woff2-variations"),
+       url("../fonts/Fraunces-Italic-Variable.woff2") format("woff2");
+  font-weight: 300 900;
+  font-style: italic;
   font-display: swap;
 }
+/* kept for the preloader mark + any legacy reference */
 @font-face {
   font-family: "Erode";
   src: url("../fonts/Erode-Semibold.woff2") format("woff2");
   font-weight: 600;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Erode";
-  src: url("../fonts/Erode-Bold.woff2") format("woff2");
-  font-weight: 700;
   font-display: swap;
 }
 @font-face {
@@ -78,7 +81,7 @@
   --on-light-mute: rgba(9, 9, 9, 0.7);
 
   /* type */
-  --font-display: "Erode", Georgia, "Times New Roman", serif;
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
   --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   --step-hero: clamp(2.75rem, 6.9vw, 6.25rem);   /* 44 → 100px */
@@ -95,6 +98,29 @@
 
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --header-h: 88px;
+
+  /* pinned-hero scroll runway — shortened on smaller screens so the
+     scroll-scrubbed intro stays proportionate rather than costing a phone
+     the same 4000px of scrolling a 1440px desktop gets */
+  --hero-scroll: 4000px;
+  /* fan-out card footprint — scales with viewport instead of a fixed
+     484x570px card, so the same pinned choreography works down to phones */
+  --card-w: clamp(168px, 42vw, 484px);
+  --card-h: clamp(208px, 52vw, 570px);
+}
+
+@media (max-width: 1024px) {
+  :root { --hero-scroll: 2600px; }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --hero-scroll: 1600px;
+    /* the desktop floor (2.75rem) is too wide for the two-line headline on
+       a phone-width viewport; let it shrink further before the vw part
+       takes over */
+    --step-hero: clamp(1.875rem, 10vw, 6.25rem);
+  }
 }
 
 /* 3. Reset & base --------------------------------------------------------- */
@@ -210,7 +236,10 @@ ul {
 }
 
 .section--dark {
-  background: var(--ink);
+  position: relative;
+  background:
+    radial-gradient(120% 70% at 12% -10%, rgba(221, 255, 109, 0.05), transparent 60%),
+    var(--ink);
   color: var(--on-dark-mute);
 }
 
@@ -385,8 +414,15 @@ ul {
 }
 
 .header__logo img {
-  width: 171px;
-  height: auto;
+  /* logo.png is a 1536×1024 (1.5:1) mark-plus-wordmark lockup, not the old
+     342×120 landscape crop this width was tuned for. Capped by height
+     instead of width so it always sits proportionally inside the header
+     regardless of the source image's aspect ratio — sized just under
+     --header-h (88px) so the header itself never has to stretch, but
+     tall enough that the "MAVERICK EXPEDITIONS" wordmark baked into the
+     image stays readable rather than shrinking to a blur. */
+  width: auto;
+  height: 76px;
 }
 
 .nav-link {
@@ -613,10 +649,10 @@ ul {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 484px;
-  height: 570px;
-  margin-top: -285px;
-  margin-left: -242px;
+  width: var(--card-w);
+  height: var(--card-h);
+  margin-top: calc(var(--card-h) / -2);
+  margin-left: calc(var(--card-w) / -2);
   border-radius: var(--radius);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
   will-change: transform;
@@ -674,6 +710,60 @@ ul {
   50%      { transform: translateY(6px); }
 }
 
+/* 7b. Shared "eyebrow" tag + stat row -------------------------------------
+   Originally written for the lift-off balloon section; now doubles as the
+   label/stat styling for the Plan Your Trip section (16a) so both keep the
+   same visual grammar. */
+
+.liftoff__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 7px 16px 7px 8px;
+  border-radius: 999px;
+  background: rgba(221, 255, 109, 0.12);
+  color: var(--lime);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.liftoff__eyebrow span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--lime);
+  color: var(--ink);
+}
+
+.liftoff__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 26px);
+  margin-top: clamp(30px, 4vw, 44px);
+  padding-top: clamp(24px, 3vw, 34px);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.liftoff__stat b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: var(--lime);
+}
+
+.liftoff__stat span {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.875rem;
+  color: var(--on-dark-mute);
+}
 
 /* 8. Services ------------------------------------------------------------- */
 
@@ -1407,7 +1497,7 @@ ul {
   border-radius: var(--radius);
   background: var(--ink);
   color: var(--on-dark-mute);
-  transition: transform 0.4s var(--ease);
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
 }
 
 .quote-card:nth-child(even) {
@@ -1417,6 +1507,7 @@ ul {
 
 .quote-card:hover {
   transform: translateY(-8px);
+  box-shadow: 0 26px 50px -22px rgba(9, 9, 9, 0.35);
 }
 
 .quote-card__text {
@@ -1516,6 +1607,163 @@ ul {
   margin-top: clamp(30px, 4vw, 50px);
 }
 
+/* 16a. Plan your trip ------------------------------------------------------ */
+
+/* Trip-enquiry form. Sits in the `.liftoff` section's old slot in the visual
+   rhythm (same dark band, same eyebrow/stat styling) so nothing about the
+   page's pacing changes — only the 3D balloon is gone. */
+
+.plan-trip__grid {
+  display: grid;
+  gap: clamp(40px, 5vw, 80px);
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .plan-trip__grid {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  }
+}
+
+.plan-trip__contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 28px;
+  margin-top: clamp(28px, 3vw, 40px);
+  padding-top: clamp(28px, 3vw, 40px);
+  border-top: 1px solid var(--on-dark-faint);
+}
+
+.plan-trip__contact a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--on-dark);
+  font-family: var(--font-display);
+  font-weight: 600;
+  transition: color 0.25s var(--ease);
+}
+
+.plan-trip__contact a:hover {
+  color: var(--lime);
+}
+
+.plan-trip__contact svg {
+  flex: none;
+  color: var(--lime);
+}
+
+.plan-trip__form {
+  display: grid;
+  gap: 18px;
+  padding: clamp(28px, 3vw, 44px);
+  background: var(--ink-soft);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius);
+  /* Tell the browser this form lives on a dark surface. Native chrome we
+     can't reach with CSS — a <select>'s open dropdown list, autofill's
+     "Gobi K" panel, scrollbars — is drawn by the OS/browser, not the page,
+     and defaults to a light popup that clashes with the dark card unless
+     this is set. Chrome, Firefox and Safari all honour it. */
+  color-scheme: dark;
+}
+
+.plan-trip__row {
+  display: grid;
+  gap: 18px;
+}
+
+@media (min-width: 640px) {
+  .plan-trip__row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.plan-trip__form .field {
+  display: grid;
+  gap: 8px;
+}
+
+.plan-trip__form label {
+  font-size: 0.875rem;
+  color: var(--on-dark-mute);
+}
+
+.plan-trip__form input,
+.plan-trip__form select,
+.plan-trip__form textarea {
+  min-height: 54px;
+  padding: 0 20px;
+  border: 1px solid var(--on-dark-faint);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--on-dark);
+  font: inherit;
+  font-size: 0.9375rem;
+  appearance: none;
+}
+
+.plan-trip__form textarea {
+  min-height: 96px;
+  padding-block: 14px;
+  resize: vertical;
+}
+
+.plan-trip__form select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9' fill='none' stroke='%23ddff6d' stroke-width='2'%3E%3Cpath d='M1 1l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 20px center;
+  padding-right: 44px;
+}
+
+.plan-trip__form select:invalid {
+  color: var(--on-dark-mute);
+}
+
+/* Browsers that do let CSS reach into the open option list (Firefox, some
+   Chromium builds) get it explicitly dark too, matching color-scheme
+   above rather than leaving it at the page's light defaults. */
+.plan-trip__form select option {
+  color: var(--on-dark);
+  background: var(--ink-soft);
+}
+
+.plan-trip__form input::placeholder,
+.plan-trip__form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Chrome/Edge paint autofilled fields with their own light blue-on-white
+   panel, ignoring our background/color entirely, unless it's overridden
+   with this box-shadow trick (the standard fix — there's no clean
+   background-color override for :-webkit-autofill). */
+.plan-trip__form input:-webkit-autofill,
+.plan-trip__form input:-webkit-autofill:hover,
+.plan-trip__form input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--on-dark);
+  -webkit-box-shadow: 0 0 0 1000px var(--ink-soft) inset;
+  box-shadow: 0 0 0 1000px var(--ink-soft) inset;
+  caret-color: var(--on-dark);
+  transition: background-color 999999s ease-in-out 0s;
+}
+
+.plan-trip__form input:focus,
+.plan-trip__form select:focus,
+.plan-trip__form textarea:focus {
+  border-color: var(--lime);
+  outline: none;
+}
+
+.plan-trip__form button[type="submit"] {
+  justify-self: start;
+  margin-top: 6px;
+}
+
+.plan-trip__note {
+  min-height: 1.3em;
+  font-size: 0.875rem;
+}
+
 /* 17. Footer -------------------------------------------------------------- */
 
 .footer {
@@ -1612,6 +1860,7 @@ ul {
   background: transparent;
   color: var(--on-dark);
   font: inherit;
+  color-scheme: dark;
 }
 
 .newsletter__form input::placeholder {
@@ -1621,6 +1870,16 @@ ul {
 .newsletter__form input:focus {
   border-color: var(--lime);
   outline: none;
+}
+
+.newsletter__form input:-webkit-autofill,
+.newsletter__form input:-webkit-autofill:hover,
+.newsletter__form input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--on-dark);
+  -webkit-box-shadow: 0 0 0 1000px var(--ink-soft) inset;
+  box-shadow: 0 0 0 1000px var(--ink-soft) inset;
+  caret-color: var(--on-dark);
+  transition: background-color 999999s ease-in-out 0s;
 }
 
 .newsletter__note {
@@ -1950,97 +2209,27 @@ ul {
   }
 }
 
+/* Below 1024px the hero keeps the same pinned, scroll-scrubbed composition
+   as desktop — same three scenes, same fan-out — just over a shorter
+   scroll runway (--hero-scroll, set above) and with --card-w/--card-h
+   scaling the cards down instead of swapping to a flat static grid.
+   assets/js/main.js only turns the pin off for prefers-reduced-motion, not
+   for viewport width, so this is genuinely the same animation, not a
+   simplified stand-in. */
+
 @media (max-width: 1024px) {
-  /* below the pin breakpoint the hero is a static composition, so it only
-     needs one viewport of height */
-  .hero {
-    height: auto;
-    padding-block: clamp(90px, 14vw, 140px) clamp(60px, 9vw, 110px);
-  }
-
-  .hero__pin {
-    position: static;
-    height: auto;
-  }
-
-  .hero__stage {
-    height: auto;
-  }
-
-  .hero__text {
-    position: static;
-    transform: none;
-  }
-
   .hero__title-1 {
+    font-size: clamp(1.5rem, 4.4vw, 2rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .hero__scroll-hint {
     display: none;
-  }
-
-  .hero__title-2 {
-    position: static;
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-    padding-inline: 0;
-  }
-
-  .hero__cta {
-    opacity: 1;
-  }
-
-  .hero__gallery {
-    position: static;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-    width: auto;
-    height: auto;
-    margin-top: clamp(30px, 6vw, 48px);
-    transform: none;
-    pointer-events: auto;
-  }
-
-  .img-card,
-  .hero__gallery .img-card {
-    position: relative;
-    top: auto;
-    left: auto;
-    width: auto;
-    height: auto;
-    margin: 0;
-    opacity: 1;
-    transform: none;
-  }
-
-  .img-card img {
-    aspect-ratio: 3 / 4;
-    height: auto;
-  }
-
-  .img-card.img-center {
-    grid-column: 1 / -1;
-  }
-
-  .img-card.img-center img {
-    aspect-ratio: 16 / 10;
   }
 
   .img-caption {
-    left: 12px;
-    bottom: 12px;
-    max-width: calc(100% - 24px);
-    padding: 6px 12px;
-    border-radius: 999px;
-    background: rgba(9, 9, 9, 0.6);
-    backdrop-filter: blur(6px);
-    font-size: 0.8125rem;
-    white-space: normal;
-    opacity: 1;
-    transform: none;
-  }
-
-  .hero__scroll-hint {
-    display: none;
+    font-size: 1.0625rem;
   }
 }
 
@@ -2109,12 +2298,13 @@ ul {
   border-radius: var(--radius);
   background: var(--ink);
   transition: border-color 0.35s var(--ease), transform 0.35s var(--ease),
-    background-color 0.35s var(--ease);
+    background-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
 }
 
 .service-tile:hover {
   border-color: var(--lime);
   transform: translateY(-6px);
+  box-shadow: 0 22px 44px -20px rgba(221, 255, 109, 0.22);
 }
 
 .service-tile__icon {

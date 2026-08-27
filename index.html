@@ -3,20 +3,60 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Maverick Expeditions — Forge Your Own Path</title>
-<meta name="description" content="Maverick Expeditions plans student tours, family and honeymoon packages, pilgrimage circuits, industrial visits and corporate trips across Tamil Nadu, Kerala, Karnataka, Goa and North India. Based in Arulpuram, Tiruppur.">
+<title>Maverick Expeditions | South India Tour Packages &amp; Group Travel, Tiruppur</title>
+<meta name="description" content="Custom South India tour packages from Tiruppur — student tours, family &amp; honeymoon trips, pilgrimage circuits, industrial visits and corporate offsites across Tamil Nadu, Kerala, Karnataka, Goa &amp; North India. Get a free itinerary.">
 <meta name="theme-color" content="#090909">
+<link rel="canonical" href="https://maverickexpeditions.in/">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Maverick Expeditions — Forge Your Own Path">
-<meta property="og:description" content="Journeys to places that stay with you forever. Student tours, family packages, pilgrimage circuits and corporate trips across South India.">
-<meta property="og:image" content="assets/img/hero-munnar.webp">
+<meta property="og:url" content="https://maverickexpeditions.in/">
+<meta property="og:site_name" content="Maverick Expeditions">
+<meta property="og:title" content="Maverick Expeditions — South India Tour Packages &amp; Group Travel">
+<meta property="og:description" content="Journeys to places that stay with you forever. Student tours, family packages, pilgrimage circuits and corporate trips across South India, planned from Tiruppur.">
+<meta property="og:image" content="https://maverickexpeditions.in/assets/img/hero-munnar.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Maverick Expeditions — South India Tour Packages &amp; Group Travel">
+<meta name="twitter:description" content="Student tours, family &amp; honeymoon packages, pilgrimage circuits and corporate trips across Tamil Nadu, Kerala, Karnataka, Goa &amp; North India.">
+<meta name="twitter:image" content="https://maverickexpeditions.in/assets/img/hero-munnar.webp">
 
 <link rel="icon" href="assets/img/favicon.png" type="image/png">
-<link rel="preload" href="assets/fonts/Erode-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/Fraunces-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Inter.woff2" as="font" type="font/woff2" crossorigin>
 <script>document.documentElement.classList.add("js");</script>
 <link rel="stylesheet" href="assets/css/style.css">
+
+<!-- Structured data — helps Google understand this as a local travel agency
+     and can surface phone / area-served / offer info directly in search. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TravelAgency",
+  "name": "Maverick Expeditions",
+  "url": "https://maverickexpeditions.in/",
+  "image": "https://maverickexpeditions.in/assets/img/logo.png",
+  "logo": "https://maverickexpeditions.in/assets/img/logo.png",
+  "telephone": "+91-81108-49375",
+  "email": "maverickexpeditions@gmail.com",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Arulpuram",
+    "addressLocality": "Tiruppur",
+    "addressRegion": "Tamil Nadu",
+    "postalCode": "641605",
+    "addressCountry": "IN"
+  },
+  "areaServed": ["Tamil Nadu", "Kerala", "Karnataka", "Goa", "North India"],
+  "makesOffer": [
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Student Tour Packages" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Family Tour Packages" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Corporate Tour & Offsite Planning" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Honeymoon Packages" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Pilgrimage Tour Circuits" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Industrial Visit Coordination" } }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -35,6 +75,7 @@
 
     <nav class="header__nav" aria-label="Primary">
       <a class="nav-link" href="#top" aria-current="page">Home</a>
+      <a class="nav-link" href="#plan-trip">Plan Your Trip</a>
       <a class="nav-link" href="#destinations">Destinations</a>
       <a class="nav-link" href="#services">Experiences</a>
       <a class="nav-link" href="#attractions">Attractions</a>
@@ -74,6 +115,7 @@
   <button class="drawer__close" type="button" data-drawer-close aria-label="Close menu">&times;</button>
   <nav class="drawer__list">
     <a href="#top" data-drawer-close>Home</a>
+    <a href="#plan-trip" data-drawer-close>Plan Your Trip</a>
     <a href="#destinations" data-drawer-close>Destinations</a>
     <a href="#services" data-drawer-close>Experiences</a>
     <a href="#attractions" data-drawer-close>Attractions</a>
@@ -885,6 +927,131 @@
   </div>
 </section>
 
+<!-- ====================================================== plan-your-trip -->
+<!-- Trip enquiry form. Submits straight into a Google Form (and its linked
+     Sheet) via assets/js/main.js → initTripForm(). See the
+     TRIP_FORM_ENDPOINT / TRIP_FORM_FIELDS block near the top of that
+     function for the one-time setup this needs before it goes live. -->
+<section class="section section--dark plan-trip" id="plan-trip">
+  <div class="container plan-trip__grid">
+
+    <div class="wow fadeInUp">
+      <span class="liftoff__eyebrow">
+        <span aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m0 0-6-6m6 6-6 6"/></svg>
+        </span>
+        Plan Your Trip
+      </span>
+      <h2 class="section-title">Tell Us Where, We'll Handle How</h2>
+      <p class="section-lead" style="margin-top:20px">
+        Share your dates, group size and the kind of South India tour package
+        you're after — a Maverick coordinator calls back with a day-by-day
+        itinerary and full costing, usually the same day.
+      </p>
+
+      <div class="liftoff__stats">
+        <div class="liftoff__stat">
+          <b>11</b>
+          <span>Years running groups</span>
+        </div>
+        <div class="liftoff__stat">
+          <b>40+</b>
+          <span>Circuits across South India</span>
+        </div>
+        <div class="liftoff__stat">
+          <b>5,000+</b>
+          <span>Travellers taken further</span>
+        </div>
+      </div>
+
+      <ul class="plan-trip__contact">
+        <li>
+          <a href="tel:+918110849375">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.6 2.8a2 2 0 0 1-.4 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.8 2z"/></svg>
+            +91 81108 49375
+          </a>
+        </li>
+        <li>
+          <a href="https://wa.me/918110849375">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.6 7.3L3 20.5l1.8-5.3A8.5 8.5 0 1 1 21 11.5z"/><path d="M8.5 9.5c0 3 2 5 5 5"/></svg>
+            WhatsApp Us
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <form class="plan-trip__form wow fadeInUp" style="--delay:.1s" id="tripForm" data-trip-form novalidate>
+
+      <div class="plan-trip__row">
+        <div class="field">
+          <label for="trip-name">Full Name*</label>
+          <input id="trip-name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="trip-phone">Phone / WhatsApp*</label>
+          <input id="trip-phone" name="phone" type="tel" autocomplete="tel" required>
+        </div>
+      </div>
+
+      <div class="plan-trip__row">
+        <div class="field">
+          <label for="trip-email">Email Address*</label>
+          <input id="trip-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="trip-travellers">Number of Travellers*</label>
+          <input id="trip-travellers" name="travellers" type="number" min="1" inputmode="numeric" required>
+        </div>
+      </div>
+
+      <div class="plan-trip__row">
+        <div class="field">
+          <label for="trip-destination">Destination / Circuit*</label>
+          <select id="trip-destination" name="destination" required>
+            <option value="" disabled selected>Choose a region</option>
+            <option>Tamil Nadu</option>
+            <option>Kerala</option>
+            <option>Karnataka</option>
+            <option>Goa &amp; North India</option>
+            <option>Multiple / Not sure yet</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="trip-type">Trip Type*</label>
+          <select id="trip-type" name="tripType" required>
+            <option value="" disabled selected>Choose a type</option>
+            <option>Student Tour</option>
+            <option>Family Tour</option>
+            <option>Corporate Tour</option>
+            <option>Honeymoon Package</option>
+            <option>Pilgrimage Tour</option>
+            <option>Industrial Visit</option>
+            <option>Weekend Trip</option>
+            <option>Custom Package</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="trip-dates">Preferred Travel Dates</label>
+        <input id="trip-dates" name="dates" type="text" placeholder="e.g. 12 – 18 December">
+      </div>
+
+      <div class="field">
+        <label for="trip-message">Anything else we should know?</label>
+        <textarea id="trip-message" name="message" rows="3" placeholder="Budget, must-see stops, accessibility needs..."></textarea>
+      </div>
+
+      <button class="btn btn--light btn-parallax" type="submit">
+        <span class="btn__label"><span data-text="Get My Free Itinerary">Get My Free Itinerary</span></span>
+      </button>
+
+      <p class="plan-trip__note" data-trip-form-note role="status" aria-live="polite"></p>
+    </form>
+
+  </div>
+</section>
+
 </main>
 
 <!-- ============================================================ footer -->
@@ -912,6 +1079,7 @@
             <h3>Links</h3>
             <ul>
               <li><a href="#top">Home</a></li>
+              <li><a href="#plan-trip">Plan Your Trip</a></li>
               <li><a href="#destinations">Destinations</a></li>
               <li><a href="#services">Experiences</a></li>
               <li><a href="#highlights">Highlights</a></li>
