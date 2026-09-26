@@ -161,7 +161,12 @@
       if (!link) return;
       var id = link.getAttribute("href");
       if (!id || id === "#") return;
-      var el = document.querySelector(id);
+      var el;
+      try {
+        el = document.querySelector(id);
+      } catch (err) {
+        return; // malformed hash — let the browser handle it
+      }
       if (!el) return;
       e.preventDefault();
       var header = $(".header");
@@ -636,10 +641,17 @@
         return;
       }
 
-      /* No backend on a static build — wire this to your mail service. */
-      note.textContent = "Thanks! We'll be in touch at " + value + ".";
+      /* No backend on a static build, so the address is not stored anywhere.
+         Send people to a channel that is actually monitored rather than
+         claim a subscription that never happens. */
+      var mail =
+        "mailto:maverickexpeditions@gmail.com?subject=" +
+        encodeURIComponent("Subscribe me to Maverick Expeditions updates") +
+        "&body=" + encodeURIComponent("Please add " + value + " to your travel updates list.");
+      note.textContent = "Opening your email app to confirm your subscription…";
       note.style.color = "var(--lime)";
       form.reset();
+      window.location.href = mail;
     });
   }
 
@@ -695,6 +707,13 @@
 
       if (!form.checkValidity()) {
         form.reportValidity();
+        return;
+      }
+
+      /* bots fill the hidden honeypot; pretend success and drop the entry */
+      var trap = $("[name='website']", form);
+      if (trap && trap.value) {
+        form.reset();
         return;
       }
 
