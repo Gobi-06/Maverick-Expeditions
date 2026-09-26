@@ -63,18 +63,5 @@
         }
       ]
     }
-  ],
-  "redirects": [
-    {
-      "source": "/(.*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "www.maverickexpeditions.in"
-        }
-      ],
-      "destination": "https://maverickexpeditions.in/$1",
-      "permanent": true
-    }
   ]
 }
